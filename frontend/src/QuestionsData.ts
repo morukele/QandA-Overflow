@@ -1,6 +1,11 @@
-import { QuestionData } from "./types";
+import {
+  AnswerData,
+  PostAnswerData,
+  PostQuestionData,
+  QuestionData,
+} from "./types";
 
-const questions: QuestionData[] = [
+let questions: QuestionData[] = [
   {
     questionId: 1,
     title: "Why should I learn TypeScript?",
@@ -65,4 +70,33 @@ export const searchQuestions = async (
       q.title.toLowerCase().indexOf(criteria.toLowerCase()) >= 0 ||
       q.content.toLowerCase().indexOf(criteria.toLowerCase()) >= 0
   );
+};
+
+export const postQuestion = async (
+  question: PostQuestionData
+): Promise<QuestionData | undefined> => {
+  await wait(500);
+  const questionId = Math.max(...questions.map((q) => q.questionId)) + 1;
+  const newQuestion: QuestionData = {
+    ...question,
+    questionId,
+    answers: [],
+  };
+  questions.push(newQuestion);
+  return newQuestion;
+};
+
+export const postAnswer = async (
+  answer: PostAnswerData
+): Promise<AnswerData | undefined> => {
+  await wait(500);
+  const question = questions.filter(
+    (q) => q.questionId === answer.questionId
+  )[0];
+  const answerInQuestion: AnswerData = {
+    answerId: 99,
+    ...answer,
+  };
+  question.answers.push(answerInQuestion);
+  return answerInQuestion;
 };
