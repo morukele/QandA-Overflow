@@ -1,3 +1,5 @@
+import { gettingUnansweredQuestionsAction } from "../Store";
+
 export interface QuestionData {
   questionId: number;
   title: string;
@@ -26,4 +28,15 @@ export interface PostAnswerData {
   content: string;
   userName: string;
   created: Date;
+}
+
+export interface QuestionsState {
+  readonly loading: boolean;
+  readonly unanswered: QuestionData[];
+  readonly viewing: QuestionData | null;
+  readonly searched: QuestionData[];
+}
+
+export interface AppState {
+  readonly questions: QuestionsState;
 }
