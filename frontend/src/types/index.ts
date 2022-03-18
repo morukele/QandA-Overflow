@@ -1,3 +1,4 @@
+import { compose } from "redux";
 import { gettingUnansweredQuestionsAction } from "../Store";
 
 export interface QuestionData {
@@ -39,4 +40,10 @@ export interface QuestionsState {
 
 export interface AppState {
   readonly questions: QuestionsState;
+}
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
 }

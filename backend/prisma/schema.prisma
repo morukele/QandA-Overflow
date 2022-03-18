@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Answer {
+  answerId   Int      @id(map: "PK_Answer") @default(autoincrement())
+  questionId Int
+  content    String   @db.NVarChar(Max)
+  userId     String   @db.NVarChar(150)
+  userName   String   @db.NVarChar(150)
+  created    DateTime
+  question   Question @relation(fields: [questionId], references: [questionId], onDelete: Cascade, map: "FK_Answer_Question")
+}
+
+model Question {
+  questionId Int      @id(map: "PK_Question") @default(autoincrement())
+  title      String   @db.NVarChar(100)
+  content    String   @db.NVarChar(Max)
+  userId     String   @db.NVarChar(150)
+  userName   String   @db.NVarChar(150)
+  created    DateTime
+  answer     Answer[]
+}
+
+model SchemaVersions {
+  id         Int      @id(map: "PK_SchemaVersions_Id") @default(autoincrement())
+  scriptName String   @db.NVarChar(255)
+  applied    DateTime @db.DateTime
+}

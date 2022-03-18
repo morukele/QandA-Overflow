@@ -1,4 +1,4 @@
-import { combineReducers, createStore, Store } from "redux";
+import { combineReducers, compose, createStore, Store } from "redux";
 import { AppState, QuestionData, QuestionsState } from "./types";
 
 const initialQuestionState: QuestionsState = {
@@ -111,7 +111,9 @@ const rootReducer = combineReducers<AppState>({
   questions: questionsReducer,
 });
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export const configureStore = (): Store<AppState> => {
-  const store = createStore(rootReducer, undefined);
+  const store = createStore(rootReducer, composeEnhancers());
   return store;
 };

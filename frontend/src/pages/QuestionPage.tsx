@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import AnswerList from "../components/AnswerList";
 import Page from "../components/Page";
 import { getQuestion, postAnswer } from "../QuestionsData";
+import { gettingQuestionAction, gotQuestionAction } from "../Store";
 import {
   FieldContainer,
   FieldLabel,
@@ -17,22 +19,24 @@ import {
   PrimaryButton,
   SubmissionSuccess,
 } from "../Styles";
-import { QuestionData } from "../types";
+import { AppState, QuestionData } from "../types";
 
 type FormData = {
   content: string;
 };
 
 const QuestionPage = () => {
-  const [question, setQuestion] = useState<QuestionData | null>(null);
+  const dispatch = useDispatch();
+  const question = useSelector((state: AppState) => state.questions.viewing);
   const [successfullySubmitted, setSuccessfullySubmitted] = useState(false);
 
   const { questionId } = useParams();
 
   useEffect(() => {
     const doGetQuestion = async (questionId: number) => {
+      dispatch(gettingQuestionAction());
       const foundQuestion = await getQuestion(questionId);
-      setQuestion(foundQuestion);
+      dispatch(gotQuestionAction(foundQuestion));
     };
     if (questionId) {
       doGetQuestion(Number(questionId));
