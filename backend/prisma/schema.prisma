@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -24,7 +25,7 @@ model Question {
   userId     String   @db.NVarChar(150)
   userName   String   @db.NVarChar(150)
   created    DateTime
-  answer     Answer[]
+  answers    Answer[]
 }
 
 model SchemaVersions {
